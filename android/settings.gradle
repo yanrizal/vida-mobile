@@ -1,0 +1,3 @@
+rootProject.name = 'vida'
+
+include ':app'
