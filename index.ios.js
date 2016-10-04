@@ -1,85 +1,71 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
+import ProfilePage from './App/Components/ProfilePage'
 import {
   AppRegistry,
   StyleSheet,
   Text,
   View
 } from 'react-native';
+import { TabViewAnimated, TabViewPage, TabBarTop, TabBar } from 'react-native-tab-view';
 
-class vida extends Component {
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  page: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+export default class vida extends Component {
+  state = {
+    index: 0,
+    routes: [
+      { key: '1', title: 'Profile' },
+      { key: '2', title: 'Coverage' },
+      { key: '3', title: 'Policies' },
+    ],
+  };
+
+  handleChangeTab = (index) => {
+    this.setState({ index });
+  };
+
+  renderHeader = (props) => {
+    return <TabBar {...props} />;
+  };
+
+  renderScene = ({ route }) => {
+    switch (route.key) {
+    case '1':
+      return <View style={[ styles.page, { backgroundColor: '#ff4081' } ]} />;
+    case '2':
+      return <View style={[ styles.page, { backgroundColor: '#673ab7' } ]} />;
+    case '3':
+      return <View style={[ styles.page, { backgroundColor: '#FFF' } ]} />;
+    default:
+      return null;
+    }
+  };
+
+  renderPage = (props) => {
+    return <TabViewPage {...props} renderScene={this.renderScene} />;
+  };
+
   render() {
     return (
-      <View>
-        <View style={styles.header}>
-          <Text style={styles.cell}>Menu</Text>
-          <Text style={styles.cell}>
-            Personal Details
-          </Text>
-          <Text style={styles.cell}>Plus</Text>      
-        </View>
-        <View style={styles.body}>
-          <Text>Name</Text>
-          <Text>Ted Chua</Text>
-        </View>
-        <View style={styles.body}>
-          <Text>Date of birth</Text>
-          <Text>2 July 1987</Text>
-        </View>
-        <View style={styles.body}>
-          <Text>Gender</Text>
-          <Text>Male</Text>
-        </View>
-        <View style={styles.body}>
-          <Text>Smoking</Text>
-          <Text>No</Text>
-        </View>
-        <View style={styles.body}>
-          <Text>Drinking</Text>
-          <Text>1-2 times/wk</Text>
-        </View>
-        <View style={styles.body}>
-          <Text>Medical history</Text>
-          <Text>-</Text>
-        </View>
-        <View style={styles.body}>
-          <Text>Latest medical report</Text>
-          <Text>2015</Text>
-        </View>
-        <View style={styles.body}>
-          <Text>Fitness trackers</Text>
-          <Text>FitBit</Text>
-        </View>
-        <View style={styles.body}>
-          <Text>Dependants</Text>
-          <Text>...</Text>
-        </View>
-      </View>
+      <TabViewAnimated
+        style={styles.container}
+        navigationState={this.state}
+        renderScene={this.renderPage}
+        renderHeader={this.renderHeader}
+        onRequestChangeTab={this.handleChangeTab}
+      />
     );
   }
 }
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
-    height:50,
-    padding:10
-  },
-  body:{
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding:20
-  },
-  cell:{
-    
-  }
-});
 
 AppRegistry.registerComponent('vida', () => vida);
