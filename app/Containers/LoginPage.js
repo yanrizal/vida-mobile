@@ -5,7 +5,11 @@ import {
   View,
   Navigator
 } from 'react-native';
-import Button from 'react-native-button';
+const FBSDK = require('react-native-fbsdk');
+const {
+  LoginButton,
+  AccessToken
+} = FBSDK;
 
 export default class LoginPage extends Component {
 
@@ -15,37 +19,47 @@ export default class LoginPage extends Component {
         id: 'MainPage',
     });
   }
+
+  handleLoginFinished(error, result) {
+    if (error) {
+      alert("login has error: " + result.error);
+    } else if (result.isCancelled) {
+      alert("login is cancelled.");
+    } else {
+      AccessToken.getCurrentAccessToken().then(
+        (data) => {
+          this.handleBtnPress();
+          //alert(data.accessToken.toString())
+        }
+      )
+    }
+  }
+
+  componentDidMount(){
+    if(AccessToken){
+      this.handleBtnPress()
+    }
+  }
   
   render() {
     return (
-      <Button
-        containerStyle={styles.buttonContainer}
-        style={styles.button}
-        onPress={() => this.handleBtnPress()}>
-        Sign in with Facebook
-      </Button>
+      <View style={styles.container}>
+        <LoginButton
+          publishPermissions={["publish_actions"]}
+          onLoginFinished={(error, result) => {
+            this.handleLoginFinished(error,result)
+            }
+          }
+          onLogoutFinished={() => alert("logout.")}/>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  page: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  buttonContainer:{
-    padding:10, 
-    height:45, 
-    overflow:'hidden',
-    backgroundColor: '#3b5998',
-    marginTop:20
-  },
-  button:{
-    fontSize: 11, 
-    color: 'white'
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center'
   }
 });
