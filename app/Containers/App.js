@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { StyleSheet, Navigator } from 'react-native';
 import LoginPage from './LoginPage';
 import Main from './Main';
 
-export default class App extends Component {
+class App extends Component {
 
   renderScene(route, navigator) {
+    const { dispatch } = this.props
     switch (route.id) {
     case 'LoginPage':
       return (
@@ -56,3 +58,14 @@ const styles = StyleSheet.create({
     color: 'white'
   }
 });
+
+function mapStateToProps(state) {
+  console.log(state);
+  const { message, profile } = state.account
+  return {
+    message:message,
+    profile:profile
+  }
+}
+
+export default connect(mapStateToProps)(App)

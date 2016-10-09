@@ -11,7 +11,6 @@ class CoveragePage extends Component {
 
   render() {
   	const rowsNode = data.map((item) => {
-  		console.log(item)
   		return (
 	        <View key={item.title} style={styles.rowContainer}>
 	          <View style={styles.rowLabelContainer}>
@@ -25,12 +24,28 @@ class CoveragePage extends Component {
   	})
 
     return (
-      <View style={styles.mainContainer}>
-      	<Text style={styles.rowLabel}>Premiums</Text>
-      	<ScrollView style={styles.container}>
+      <ScrollView style={styles.mainContainer}>
+      	<Text style={[styles.rowLabel,{marginBottom:0,marginTop:0}]}>Premiums</Text>
+      	<View style={styles.container}>
       	{rowsNode}
-      	</ScrollView>
-      </View>
+      	</View>
+        <Text style={[styles.rowLabel,{marginBottom:0}]}>Life</Text>
+        <View style={styles.container}>
+        {rowsNode}
+        </View>
+        <Text style={[styles.rowLabel,{marginBottom:0}]}>Dependants</Text>
+        <View style={styles.container}>
+        {rowsNode}
+        </View>
+        <Text style={[styles.rowLabel,{marginBottom:0}]}>Health</Text>
+        <View style={styles.container}>
+        {rowsNode}
+        </View>
+        <Text style={[styles.rowLabel,{marginBottom:0}]}>General</Text>
+        <View style={styles.container}>
+        {rowsNode}
+        </View>
+      </ScrollView>
     );
   }
 }

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TabBarIOS } from 'react-native';
+import { connect } from 'react-redux';
 import { TabViewAnimated, TabViewPage, TabBarTop, TabBar } from 'react-native-tab-view';
 import ProfilePage from '../Components/ProfilePage';
 import CoveragePage from '../Components/CoveragePage';
+import PoliciesPage from '../Components/PoliciesPage';
 
-export default class Main extends Component {
+class Main extends Component {
   state = {
     index: 0,
     routes: [
@@ -29,7 +31,7 @@ export default class Main extends Component {
     case '2':
       return <CoveragePage />;
     case '3':
-      return <View style={[ styles.page, { backgroundColor: '#FFF' } ]} />;
+      return <PoliciesPage />;
     default:
       return null;
     }
@@ -72,3 +74,13 @@ const styles = StyleSheet.create({
     borderRadius:5
   }
 });
+
+function mapStateToProps(state) {
+  const { message, profile } = state.account
+  return {
+    message:message,
+    profile:profile
+  }
+}
+
+export default connect(mapStateToProps)(Main)

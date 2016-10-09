@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Navigator
-} from 'react-native';
-const FBSDK = require('react-native-fbsdk');
-const {
-  LoginButton,
-  AccessToken
-} = FBSDK;
+import { connect } from 'react-redux';
+import { StyleSheet, View, Navigator } from 'react-native';
+import { LoginManager, LoginButton, AccessToken, 
+  GraphRequest, GraphRequestManager, } from 'react-native-fbsdk';
+import { getProfile, fetchProfile } from '../Actions'
 
-export default class LoginPage extends Component {
+class LoginPage extends Component {
 
   handleBtnPress() {
     const { navigator } = this.props;
@@ -29,16 +23,39 @@ export default class LoginPage extends Component {
       AccessToken.getCurrentAccessToken().then(
         (data) => {
           this.handleBtnPress();
-          //alert(data.accessToken.toString())
+          this.getInfoRequest();
         }
       )
     }
   }
 
+  getInfoRequest(){
+    const { dispatch } = this.props;
+    dispatch(fetchProfile())
+    const infoRequest = new GraphRequest(
+      '/me?fields=id,first_name,last_name,name,picture.type(large),email,gender',
+      null,
+      function(error: ?Object, result: ?Object){
+        if (error) {
+          console.log(error)
+        } else {
+          console.log(result)
+          dispatch(getProfile(result))
+        }
+      },
+    );
+    new GraphRequestManager().addRequest(infoRequest).start();
+  }
+
   componentDidMount(){
-    if(AccessToken){
-      this.handleBtnPress()
-    }
+    AccessToken.getCurrentAccessToken().then(
+      (data) => {
+        if(data.accessToken.toString() || null){
+          this.handleBtnPress();
+          this.getInfoRequest();
+        }
+      }
+    )
   }
   
   render() {
@@ -63,3 +80,13 @@ const styles = StyleSheet.create({
     alignItems:'center'
   }
 });
+
+function mapStateToProps(state) {
+  const { message, profile } = state.account
+  return {
+    message:message,
+    profile:profile
+  }
+}
+
+export default connect(mapStateToProps)(LoginPage)
