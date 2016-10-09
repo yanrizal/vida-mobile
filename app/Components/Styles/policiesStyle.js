@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
   bottomCont:{
     flex:1,
     flexDirection:'column',
-    justifyContent:'center'
+    justifyContent:'center',
+    marginBottom:50
   },
   row: {
     width: 100,

@@ -19,13 +19,13 @@ const styles = StyleSheet.create({
     borderColor: 'rgb(81,189,138)'
   },
   container: {
-    flex: 1,
     paddingTop: 10,
     marginBottom: 10
   },
   mainContainer: {  	
     marginTop: 10,
-  	backgroundColor: '#FFF'
+  	backgroundColor: '#FFF',
+    marginBottom:50
   },
   fbContainer: {
     marginTop: 10,

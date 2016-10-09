@@ -55,7 +55,9 @@ class LoginPage extends Component {
           this.getInfoRequest();
         }
       }
-    )
+    ).catch((err) => {
+      console.log(err)
+    })
   }
   
   render() {
